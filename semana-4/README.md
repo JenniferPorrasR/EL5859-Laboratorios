@@ -37,8 +37,11 @@ El speedup alcanzado nunca es mayor que 1.0: añadir hilos, en casi todos los ca
 Utilizando la ley de Amdahl S(N) = 1 / ( (1 - P) + P/N ) y despejando P a partir del dato medido en en N = 2 se obtiene:
 
 0.96 = 1 / ((1-P) + P/2)
+
 (1-P) + P/2 = 1.0417
+
 1 - P/2 = 1.0417
+
 P ≈ -0.083
 
 Se obtiene una fracción paralela negativa, lo que en el modelo de Amdahl no tiene sentido. Esto señala que el resultado no puede ser explicado solamente por la sección en serie del algoritmo. El modelo de Amdahl no tiene en cuenta el costo extra de la creación y sincronización de hilos, que es lo que más afecta el rendimiento en este caso. Por ende, para un problema de tal magnitud, paralelizar el algoritmo no es prácticamente ventajoso porque la mejora lograda está cerca del 0%.
@@ -70,7 +73,9 @@ El speedup nunca sobrepasa 1.0: añadir hilos no acelera el programa, sino que l
 Utilizando la ley de Amdahl S(N) = 1 / ( (1 - P) + P/N ) y despejando P a partir del dato medido en en N = 2 se obtiene:
 
 0.88 = 1 / ((1-P) + P/2)
+
 (1-P) + P/2 = 1.1364
+
 P ≈ -0.273
 
 Una vez más, se obtiene una fracción paralela negativa, lo que demuestra que el modelo de Amdahl no es capaz de explicar la conducta observada: el costo dominante no es la parte en serie del algoritmo, sino el overhead de gestión de hilos, que en este caso se ve agravado por la falta de afinidad con la CPU. En la práctica, el porcentaje de código que vale la pena paralelizar para este tamaño de problema es prácticamente 0% y es incluso más bajo que en la versión con `cpu-affinity`.
@@ -106,13 +111,17 @@ No obstante, la escalabilidad **no es lineal**: se observa una caída en 5 hilos
 Utilizando la ley de Amdahl S(N) = 1 / ( (1 - P) + P/N ) y despejando P a partir del dato medido en en N = 2 se obtiene:
 
 1.88 = 1 / ((1-P) + P/2)
+
 (1-P) + P/2 = 0.5319
+
 P ≈ 0,9362
 
 Si se despeja P usando el dato medida en N = 8 se obtiene:
 
 4.02 = 1 / ((1-P) + P/2)
+
 (1-P) + P/2 = 0.2488
+
 P ≈ 0.859
 
 Se observa que, en contraste con los ejercicios A con `cpu-naive`/`cpu-affinity`, **hay una porción del código que puede ser paralelizada de manera significativa (entre 85% y 94%)**. Ambas estimaciones están alineadas entre sí. El modelo de Amdahl es ideal y no tiene en cuenta efectos reales, como el desbalanceo de carga que se observa en cinco hilos o el overhead de sincronización que aumenta a medida que el número de hilos crece; por eso, las dos estimaciones son ligeramente diferentes.
@@ -144,13 +153,17 @@ En contraste con `matmul-tiled`, en este caso el programa **obtiene algo de para
 Utilizando la ley de Amdahl S(N) = 1 / ( (1 - P) + P/N ) y despejando P a partir del dato medido en en N = 2 se obtiene:
 
 1.37 = 1 / ((1-P) + P/2)
+
 (1-P) + P/2 = 0.270
+
 P ≈ 0,54
 
 Si se despeja P usando el dato medida en N = 4 se obtiene:
 
 1.47 = 1 / ((1-P) + P/2)
+
 (1-P) + P/4 = 0.6803
+
 P ≈ 0.427
 
 Las dos estimaciones son coherentes y reflejan un porcentaje paralelo **moderado (entre el 43% y el 54%)**, el cual es considerablemente más bajo que en `matmul-tiled` (85–94%), pero es evidentemente más alto que en `cpu-naive`/`cpu-affinity` (~0%). Esto es consistente con la naturaleza del algoritmo: el softmax cuenta con una fase que puede ejecutarse de manera paralela (el cálculo de exponenciales) y otra que debe ser secuencial (la suma total para normalizar), lo cual reduce la porción paralelizable. Esta última se vuelve más costosa en términos de sincronización a medida que el número de hilos crece.
