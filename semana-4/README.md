@@ -173,7 +173,7 @@ Las dos estimaciones son coherentes y reflejan un porcentaje paralelo **moderado
 La eficiencia desciende de manera rápida y constante en todo el rango, desde 100 % (1 hilo) a 69 % (2 hilos), 48 % (3 hilos), y continúa disminuyendo hasta llegar a solo el 12 % con 8 hilos. Incluso en el mejor caso de speedup (4 hilos), la eficiencia es solo del 37%, lo que demuestra que, incluso en su mejor momento, el paralelismo todavía está lejos de ser óptimo. La poca eficiencia se debe a que el tamaño de la carga de trabajo por hilo es pequeño, a la contención de memoria compartida cuando se excede el número de núcleos físicos disponibles y al overhead de sincronización en la fase de reducción (suma para normalizar el softmax). Por estas razones, añadir más hilos después del cuarto resulta perjudicial para este problema.
 
 
-# Práctica de clase 3
+# Práctica de clase 4
 
 Jennifer Porras Rojas 2020112477
 
@@ -241,6 +241,10 @@ ls -lh libraries/build/lib/libvectorops.so
 |---|---|
 | libvectorops.so | 16K |
 
+
+Los resultados indican que la versión estática (1,853,326.5 µs en total) fue significativamente más veloz que la versión dinámica (4,610,891.0 µs en total), siendo la versión dinámica alrededor de 2.5 veces más lenta. En las tres operaciones evaluadas (fill A, fill B y add), esta diferencia se sostiene; en cada una de ellas, la versión dinámica requirió entre 1.7x y 3.4x más tiempo que la estática.
+
+En términos de tamaño, la biblioteca estática (`libvectorops.a`, 1.8K) es menor que la dinámica (`libvectorops.so`, 16K), lo cual muestra el resultado contrario. Esto es consistente con la teoría, debido a que la biblioteca estática simplemente consiste en el código objeto empaquetado; por otro lado, la biblioteca dinámica necesita incorporar información adicional para ser cargada y enlazada durante el tiempo de ejecución por el sistema operativo.
 
 
 
