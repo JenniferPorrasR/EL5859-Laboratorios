@@ -171,3 +171,76 @@ Las dos estimaciones son coherentes y reflejan un porcentaje paralelo **moderado
 **Eficiencia**
 
 La eficiencia desciende de manera rápida y constante en todo el rango, desde 100 % (1 hilo) a 69 % (2 hilos), 48 % (3 hilos), y continúa disminuyendo hasta llegar a solo el 12 % con 8 hilos. Incluso en el mejor caso de speedup (4 hilos), la eficiencia es solo del 37%, lo que demuestra que, incluso en su mejor momento, el paralelismo todavía está lejos de ser óptimo. La poca eficiencia se debe a que el tamaño de la carga de trabajo por hilo es pequeño, a la contención de memoria compartida cuando se excede el número de núcleos físicos disponibles y al overhead de sincronización en la fase de reducción (suma para normalizar el softmax). Por estas razones, añadir más hilos después del cuarto resulta perjudicial para este problema.
+
+
+# Práctica de clase 3
+
+Jennifer Porras Rojas 2020112477
+
+## Características del procesador 
+
+| Ítem | Detalle |
+|---|---|
+| Procesador | 11th Gen Intel(R) Core (TM) i7-1165G7 |
+| Núcleos físicos / hilos (SMT) | 4 / 2 |
+| CPU(s) | 8|
+
+## Ejercicio A
+
+### Comando ejecutado 
+
+```bash
+./libraries/build/bin/bench-static 1000000 1000 1.0 2.0
+```
+
+### Resultado 
+
+| Operación | Tiempo total (µs) | Tiempo por iteración (µs) |
+|---|---|---|
+| fill A | 460,327.077 | 460.327 |
+| fill B | 467,993.806 | 467.994 |
+| add    | 925,004.951 | 925.005 |
+| **Total** | **1,853,326.521** | — |
+
+
+### Comando ejecutado 
+
+```bash
+ls -lh libraries/build/lib/libvectorops.a
+```
+
+| Archivo | Tamaño |
+|---|---|
+| libvectorops.a | 1.8K |
+
+
+## Ejercicio B
+
+### Comando ejecutado 
+
+```bash
+./libraries/build/bin/bench-dynamic 1000000 1000 1.0 2.0
+```
+
+### Resultado 
+
+| Operación | Tiempo total (µs) | Tiempo por iteración (µs) |
+|---|---|---|
+| fill A | 1,500,890.346 | 1,500.890 |
+| fill B | 1,578,454.028 | 1,578.454 |
+| add    | 1,531,545.902 | 1,531.546 |
+| **Total** | **4,610,890.998** | — |
+
+### Comando ejecutado 
+
+```bash
+ls -lh libraries/build/lib/libvectorops.so
+```
+
+| Archivo | Tamaño |
+|---|---|
+| libvectorops.so | 16K |
+
+
+
+
