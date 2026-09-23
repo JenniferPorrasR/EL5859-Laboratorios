@@ -20,6 +20,7 @@ __global__ void vector_add_kernel(const float *a, const float *b, float *c,
 
     if (i < n) {
         // TODO: Calcule c[i] = a[i] + b[i].
+	    c[i] = a[i] + b[i];
     }
 }
 

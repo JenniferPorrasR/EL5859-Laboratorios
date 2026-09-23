@@ -1,5 +1,5 @@
 NVCC ?= nvcc
-NVCCFLAGS ?= -O2 -std=c++17 -lineinfo
+NVCCFLAGS ?= -O2 -std=c++14 -lineinfo
 TARGET := vector_add
 SRC := main.cu
 N ?= 1048576
